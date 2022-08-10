@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Persona</title>
+<!--Bootstrap JS-->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/dist/css/adminlte.min.css}">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css}">
+
+
+<!-- DataTables -->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+<link rel="stylesheet" th:href="@{/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css}">
+
+</head>
+<!--
+`body` tag options:
+
+  Apply one or more of the following classes to to the body tag
+  to get the desired effect
+
+  * sidebar-collapse
+  * sidebar-mini
+-->
+<body class="hold-transition sidebar-mini layout-fixed">
+	<!-- Navbar -->
+	<nav th:replace="fragments/navbar :: navbar"></nav>
+	<!-- /.navbar -->
+
+	<!-- Main Sidebar Container -->
+	<aside th:replace="fragments/sidebar :: sidebar"></aside>
+	<div class="wrapper">
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0">Listado de persona</h1>
+						</div>
+						<!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item">
+									<a th:href="@{/}">Inicio</a>
+								</li>
+								<li class="breadcrumb-item active">Lista</li>
+							</ol>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+
+			<!-- Main content -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row-md-12">
+						<!-- .card -->
+						<div class="card">
+							<div class="card-header">
+								<a class="btn btn-primary float-right" th:href="@{/persona/create}" title="Crear nuevo registro"
+									role="button">
+									<i class="fas fa-file" aria-hidden="true"></i>
+									Nuevo
+								</a>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<hr>
+								<div th:if="${msg != null}" class='alert alert-success' th:text="${msg}" role='alert'></div>
+								<table id="tabla" class="table table-bordered table-striped">
+									<thead class="thead-light">
+										<tr>
+											<th scope="col">ID</th>
+											<th scope="col">Persona</th>
+											<th scope="col">Telefono</th>
+											<th scope="col">Correo</th>
+											<th scope="col">Es proveedor</th>
+											<th scope="col">Es empresa</th>
+											<th scope="col">Estado</th>
+											<th scope="col">Operaciones</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="persona : ${personas}">
+											<td th:text="${persona.id}"></td>
+											<td th:text="${persona.nombre}"></td>
+											<td th:text="${persona.telefono}"></td>
+											<td th:text="${persona.correo}"></td>
+
+											<td>
+												<span th:if="${persona.esProveedor == true}" class="badge bg-warning text-dark">Si</span>
+												<span th:unless="${persona.esProveedor == true}" class="badge bg-info text-dark">No</span>
+											</td>
+											<td>
+												<span th:if="${persona.esEmpresa == true}" class="badge bg-warning text-dark">Si</span>
+												<span th:unless="${persona.esEmpresa == true}" class="badge bg-info text-dark">No</span>
+											</td>
+											<td>
+												<span th:if="${persona.estado == true}" class="badge bg-warning text-dark">Activo</span>
+												<span th:unless="${persona.estado == true}" class="badge bg-info text-dark">Inactivo</span>
+											</td>
+											<td>
+												<a th:href="@{/persona/view/{id} (id=${persona.id}) }" class="btn btn-info btn-sm" role="button"
+													title="Ver registro">
+													<i class="fa-solid fa-eye"></i>
+												</a>
+												<a th:href="@{/persona/edit/{id} (id=${persona.id}) }" class="btn btn-success btn-sm" role="button"
+													title="Editar el registro.">
+													<i class="fas fa-pencil-alt" aria-hidden="true"></i>
+												</a>
+												<a th:href="@{/persona/delete/{id} (id=${persona.id}) }" onclick="return confirm('¿Estas seguro?')"
+													class="btn btn-danger btn-sm" role="button" title="Eliminar el registro.">
+													<i class="fas fa-trash" aria-hidden="true"></i>
+												</a>
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<th scope="col">ID</th>
+											<th scope="col">Persona</th>
+											<th scope="col">Telefono</th>
+											<th scope="col">Correo</th>
+											<th scope="col">Es proveedor</th>
+											<th scope="col">Es empresa</th>
+											<th scope="col">Estado</th>
+											<th scope="col">Operaciones</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+						<!-- /Formulario .card -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content -->
+
+		</div>
+		<!-- /.content-wrapper -->
+
+
+	</div>
+	<!-- ./wrapper -->
+
+	<!-- Main Footer -->
+	<footer th:replace="fragments/footer :: footer"></footer>
+
+	
+	<!--Bootstrap JS-->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.min.js}"></script>
+	<!-- jQuery -->
+	<script th:src="@{/jquery/jquery-3.6.0.min.js}"></script>
+	<script th:src="@{/AdminLTE-3.2.0/plugins/jquery/jquery.min.js}"></script>
+	
+	<script th:src="@{/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- AdminLTE -->
+	<script th:src="@{/adminlte/dist/js/adminlte.min.js}"></script>
+	<!-- DataTables  & Plugins -->
+	<script th:src="@{/adminlte/plugins/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/jszip/jszip.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/pdfmake/pdfmake.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/pdfmake/vfs_fonts.js}"></script>
+	<script th:src="@{/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/datatables-buttons/js/buttons.print.min.js}"></script>
+	<script th:src="@{/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js}"></script>
+	
+	<script>
+		$(function() {
+			$("#tabla").DataTable(
+					{
+						"paging" : true,
+						"lengthChange" : false,
+						"searching" : false,
+						"ordering" : true,
+						"info" : true,
+						"autoWidth" : false,
+						"responsive" : true,
+						"responsive" : true,
+						"lengthChange" : false,
+						"autoWidth" : false,
+						"buttons" : [ "copy", "csv", "excel", "pdf", "print",
+								"colvis" ]
+					}).buttons().container().appendTo(
+					'#tabla_wrapper .col-md-6:eq(0)');
+
+		});
+	</script>
+</body>
+</html>
+

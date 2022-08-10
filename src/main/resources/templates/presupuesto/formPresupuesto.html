@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title th:text="${tituloPagina}">Presupuesto Nuevo</title>
+<!--Select2 CSS-->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/select2/css/select2.min.css}">
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+<!-- AdminLTE CSS -->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/dist/css/adminlte.min.css}">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome Icons CSS -->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css}">
+<!-- AdminLTE Datatables CSS -->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+	<!-- Barra superior de navegacion -->
+	<div th:replace="fragments/navbar :: navbar"></div>
+	<!-- Barra lateral de menu -->
+	<div th:replace="fragments/sidebar :: sidebar"></div>
+	<!-- ENVOLTORIO GENERAL -->
+	<div class="wrapper">
+		<!-- CONTENIDO DE PAGINA -->
+		<div class="content-wrapper">
+			<!-- ENCABEZADO CONTENIDO DE PAGINA -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0">Presupuesto</h1>
+						</div>
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item">
+									<a th:href="@{/presupuesto/}">Lista</a>
+								</li>
+								<li class="breadcrumb-item active">Formulario</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /ENCABEZADO CONTENIDO DE PAGINA -->
+			<!-- CUERPO Y CONTENIDO DE PAGINA -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="card">
+							<div class="card-body">
+								<!-- .Formulario -->
+								<form class="row g-3" th:action="@{/presupuesto/save}" th:object="${presupuesto}"
+									th:method="${presupuesto.id == null} ? 'POST': 'PUT'">
+									<h4 class="card-header">
+										<strong th:if="${tituloFormulario == null}">Crear nuevo registro</strong> <strong
+											th:unless="${tituloFormulario == null}" th:text="${tituloFormulario}"></strong>
+										<button th:if="${presupuesto.estado == null}" class="btn btn-primary float-right" type="submit"
+											id="btnGuardar">
+											<i class="fa-solid fa-floppy-disk"></i>
+											Guardar
+										</button>
+										<a th:if="${presupuesto.estado != null} and ${presupuesto.id != null}"
+											th:href="@{/pago/create/{idPresupuesto}(idPresupuesto=${presupuesto.id})}"
+											class="btn btn-light float-right" id="btnPagar">
+											<i class="fa-solid fa-cash-register"></i>
+											Pagar
+										</a>
+										<a th:if="${presupuesto.id != null}"
+											th:href="@{/presupuesto/exportar(idCliente=${presupuesto.cliente.id}, idPresupuesto=${presupuesto.id})}"
+											class="btn btn-light float-right" id="btnDescargar">
+											<i class="fa-solid fa-download"></i>
+											Descargar
+										</a>
+										<a th:if="${presupuesto.estado == null} and ${presupuesto.id != null}"
+											th:href="@{/presupuesto/approve/idPresupuesto(idPresupuesto=${presupuesto.id})}"
+											class="btn btn-success float-right" id="btnAprobar">
+											<i class="fa-solid fa-download"></i>
+											Aprobar
+										</a>
+										<a th:if="${presupuesto.estado == null} and ${presupuesto.id != null}"
+											th:href="@{/presupuesto/reject/idPresupuesto(idPresupuesto=${presupuesto.id})}"
+											class="btn btn-danger float-right" id="btnRechazar" th:disabled="${presupuesto.estado}">
+											<i class="fa-solid fa-download"></i>
+											Rechazar
+										</a>
+									</h4>
+									<!-- GUARDAR ID -->
+									<input th:field="${presupuesto.id}" type="hidden">
+									<input th:field="${presupuesto.cliente.id}" type="hidden">
+									<input th:field="${presupuesto.fechaRegistro}" type="hidden">
+									<input th:field="${presupuesto.estado}" th:value="${presupuesto.estado}" type="hidden"
+										id="estadoPresupuesto">
+									<div th:if="${#fields.hasErrors('*')}" class='alert alert-danger' role='alert'>
+										Por favor corrija los siguientes errores:
+										<ul>
+											<li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+										</ul>
+									</div>
+									<br>
+									<div class="col-md-4">
+										<label for="id" class="form-label">ID</label>
+										<input th:field="*{id}" type="text" class="form-control" name="idPresupuestoUpdate"
+											id="idPresupuestoUpdate" readonly>
+									</div>
+									<div class="col-md-4">
+										<label for="fechaRegistro" class="form-label">Fecha de Registro</label>
+										<input th:field="*{fechaRegistro}" type="text" class="form-control" readonly>
+									</div>
+									<div class="col-md-4">
+										<label for="estado" class="form-label">Estado</label>
+										<input th:if="*{estado == null}" type="text" class="form-control" th:value="PENDIENTE" readonly>
+										<input th:if="*{estado == true}" type="text" class="form-control" th:value="APROBADO" readonly>
+										<input th:if="*{estado == false}" type="text" class="form-control" th:value="RECHAZADO" readonly>
+									</div>
+									<br>
+									<div class="col-md-6">
+										<label for="clienteSelect" class="form-label">Cliente</label>
+										<select th:field="*{cliente.id}" class="form-select searchableSelector" id="clienteSelect"
+											th:disabled="${presupuesto.cliente.id != null}">
+											<option th:each="clie : ${clientes}" th:value="${clie.id}" th:text="${clie.nombre}"></option>
+										</select>
+									</div>
+									<div class="col-md-6">
+										<label for="registradoPor" class="form-label">Vendedor</label>
+										<input type="text" class="form-control" th:field="*{registradoPor}" id="registradoPor"
+											name="registradoPor" readonly>
+									</div>
+									<br>
+									<div class="col-md-3">
+										<label for="sumatoria" class="form-label">Sumatoria</label>
+										<input type="text" class="form-control number" th:field="*{sumatoria}" id="sumatoria" name="sumatoria"
+											readonly>
+									</div>
+									<div class="col-md-3">
+										<label for="descuento" class="form-label">Descuento</label>
+										<input type="text" class="form-control number" th:field="*{descuento}" id="descuento" name="descuento"
+											th:readonly="${presupuesto.id == null or presupuesto.estado != null}" onkeyup="calcularTotal()">
+									</div>
+									<div class="col-md-3">
+										<label for="total" class="form-label">Total</label>
+										<input type="text" class="form-control number" th:field="*{total}" id="total" name="total" readonly>
+									</div>
+									<div class="col-md-3">
+										<label for="moneda" class="form-label">Moneda</label>
+										<input type="text" class="form-control" th:field="*{moneda.simbolo}" id="moneda" name="moneda" readonly>
+									</div>
+								</form>
+								<!-- /.Formulario -->
+							</div>
+						</div>
+					</div>
+					<div class="row" th:if="${presupuesto.id != null}">
+						<div class="card">
+							<div class="card-body">
+								<!-- .Opcion de producto -->
+								<h4 class="card-header">
+									<strong>Agregar producto</strong>
+								</h4>
+								<form class="row g-3" th:action="@{/presupuesto/addDetalle}" th:object="${producto}" method="post">
+									<div class="input-group col-md-12">
+										<select th:field="*{id}" class="form-select searchableSelector" id="productoSelect"
+											aria-label="Floating label select example" required="required">
+											<option th:value="${null}" selected>Seleccione producto</option>
+											<option th:each="prod : ${productos}" th:value="${prod.id}"
+												th:text="${prod.nombre}+' x '+${prod.unidadCobro}"></option>
+										</select>
+										<button class="btn btn-outline-secondary" type="submit">
+											<i class="fa-solid fa-plus"></i>
+											Agregar
+										</button>
+									</div>
+								</form>
+								<!-- /.Opcion  de producto-->
+							</div>
+						</div>
+					</div>
+					<div class="row" th:if="${presupuesto.id != null}">
+						<div class="card">
+							<div class="card-body">
+								<!-- .Tabla de detalles -->
+								<h4 class="card-header">
+									<strong>Detalles de Presupuesto</strong>
+								</h4>
+								<table id="tabla" class="table">
+									<thead class="thead-light">
+										<tr>
+											<th scope="col" colspan="1">Acciones</th>
+											<th scope="col" colspan="1">Producto</th>
+											<th scope="col">Cantidad</th>
+											<th scope="col">Precio</th>
+											<th scope="col">Unidad</th>
+											<th scope="col">Diseño</th>
+											<th scope="col">Precio/Hora</th>
+											<th scope="col">Horas</th>
+											<th scope="col">Alto CM</th>
+											<th scope="col">Ancho CM</th>
+											<th scope="col">Subtotal</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="detalle, stat : ${presupuesto.detalles}">
+											<td colspan="1">
+												<a class="btn btn-warning abrirModal btn-sm" th:href="@{/presupuesto/getOne/(id=${detalle.id})}">
+													<i class="fa-solid fa-pen-to-square"></i>
+												</a>
+												<a class="btn btn-danger btn-sm" th:href="@{/presupuesto/removeDetalle/{id}(id=${detalle.id})}">
+													<i class="fa-solid fa-circle-minus"></i>
+												</a>
+											</td>
+											<td th:text="${detalle.producto.nombre}" colspan="1"></td>
+											<td th:text="${detalle.cantidad}" class="number"></td>
+											<td th:text="${detalle.precioProducto}" class="number"></td>
+											<td th:text="${detalle.producto.unidadCobro}"></td>
+											<td th:text="${detalle.precioPorDiseno}" class="number"></td>
+											<td th:text="${detalle.precioPorTiempo}" class="number"></td>
+											<td th:text="${detalle.tiempoNecesario}" class="number"></td>
+											<td th:text="${detalle.alto}" class="number"></td>
+											<td th:text="${detalle.ancho}" class="number"></td>
+											<td th:text="${detalle.subtotal}" class="number"></td>
+										</tr>
+									</tbody>
+									<tfoot class="tfoot-light">
+										<tr>
+											<th scope="col">Acciones</th>
+											<th scope="col">Producto</th>
+											<th scope="col">Cantidad</th>
+											<th scope="col">Precio</th>
+											<th scope="col">Unidad</th>
+											<th scope="col">Diseño</th>
+											<th scope="col">Precio/Hora</th>
+											<th scope="col">Horas</th>
+											<th scope="col">Alto CM</th>
+											<th scope="col">Ancho CM</th>
+											<th scope="col">Subtotal</th>
+										</tr>
+									</tfoot>
+								</table>
+								<!-- /.Tabla de detalles -->
+							</div>
+						</div>
+					</div>
+					<!-- Modal -->
+					<div th:replace="presupuestoDetalle/editDetalleModal :: editDetalleModal"></div>
+					<!-- Modal -->
+				</div>
+			</div>
+			<!-- CUERPO Y CONTENIDO DE PAGINA -->
+		</div>
+		<!-- /CONTENIDO DE PAGINA -->
+	</div>
+	<!-- /ENVOLTORIO GENERAL -->
+	<!-- jQuery JS-->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/jquery/jquery.min.js}"></script>
+	<!-- Select2 JS -->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/select2/js/select2.min.js}"></script>
+	<!-- AdminLTE JS -->
+	<script th:src="@{/AdminLTE-3.2.0/dist/js/adminlte.min.js}"></script>
+	<!-- Bootstrap JS-->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- DataTables  & Plugins -->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/datatables/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/AdminLTE-3.2.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+	<script th:src="@{/AdminLTE-3.2.0/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+	<script th:src="@{/AdminLTE-3.2.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+	<!-- FORMATO DE NUMERO -->
+	<script th:src="@{/AutoNumeric-4.1.0/autoNumeric.min.js}"></script>
+	<script>
+		$(function() {
+			$("table").DataTable({
+				"paging" : false,
+				"lengthChange" : false,
+				"searching" : false,
+				"ordering" : false,
+				"info" : false,
+				"autoWidth" : false,
+				"responsive" : true,
+			});
+
+		});
+	</script>
+	<script type="text/javascript">
+		const autoNumeric = new AutoNumeric.multiple('.number', {
+			decimalPlaces : 0,
+			decimalCharacter : ",",
+			digitGroupSeparator : ".",
+			unformatOnSubmit : true,
+			watchExternalChanges : true
+		});
+
+		const autoNumericDecimal = new AutoNumeric.multiple('.decimal', {
+			decimalPlaces : 2,
+			decimalCharacter : ",",
+			digitGroupSeparator : ".",
+			unformatOnSubmit : true,
+			watchExternalChanges : true
+		});
+	</script>
+	<script type="text/javascript">
+		//Accion para abrir y cargar modal de edicion de detalle
+		$('.abrirModal').on(
+				'click',
+				function(event) {
+					event.preventDefault();
+					var href = $(this).attr('href');
+					$.get(href, function(detalle, status) {
+						$('#subtotalEdit').val(detalle.subtotal);
+						$('#idDetalleEdit').val(detalle.id);
+						$('#idPresupuestoEdit').val(detalle.presupuesto.id);
+						$('#productoNombreEdit').val(detalle.producto.nombre);
+						$('#productoUnidadCobroEdit').val(
+								detalle.producto.unidadCobro);
+						$('#cantidadEdit').val(detalle.cantidad);
+						$('#precioProductoEdit').val(detalle.precioProducto);
+						$('#precioPorDisenoEdit').val(detalle.precioPorDiseno);
+						$('#precioPorTiempoEdit').val(detalle.precioPorTiempo);
+						$('#tiempoNecesarioEdit').val(detalle.tiempoNecesario);
+						$('#altoEdit').val(detalle.alto);
+						$('#anchoEdit').val(detalle.ancho);
+						$('#areaEdit').val(detalle.area);
+						$('#anotacionEdit').val(detalle.anotacion);
+						if (detalle.producto.unidadCobro == 'UN') {
+							$('#altoEdit').prop('readonly', true);
+							$('#anchoEdit').prop('readonly', true);
+						}
+						if (detalle.producto.unidadCobro == 'ML') {
+							$('#altoEdit').prop('readonly', false);
+							$('#anchoEdit').prop('readonly', true);
+						}
+						if (detalle.producto.unidadCobro == 'M2') {
+							$('#altoEdit').prop('readonly', false);
+							$('#anchoEdit').prop('readonly', false);
+						}
+					});
+					$('#editDetalleModal').modal('show');
+				});
+	</script>
+	<script type="text/javascript">
+		function calcularArea() {
+			var unidadCobro = document
+					.getElementById('productoUnidadCobroEdit').value;
+			var alto = parseNumber(document.getElementById('altoEdit').value);
+			var ancho = parseNumber(document.getElementById('anchoEdit').value);
+			if (unidadCobro == 'UN') {
+				$('#areaEdit').val(1);
+			}
+			if (unidadCobro == 'M2') {
+				$('#areaEdit').val(alto * ancho / 10000);
+			}
+			if (unidadCobro == 'ML') {
+				$('#areaEdit').val(alto / 100);
+			}
+		};
+
+		function calcularTotal() {
+			var sumatoria = parseNumber((document.getElementById('sumatoria').value));
+			var descuento = parseNumber((document.getElementById('descuento').value));
+			$('#total').val((sumatoria - descuento));
+		}
+
+		function calcularSubtotal() {
+			calcularArea();
+			var unidadCobro = parseNumber(document
+					.getElementById('productoUnidadCobroEdit').value);
+			var cantidad = parseNumber(document.getElementById('cantidadEdit').value);
+			var precioProducto = parseNumber(document
+					.getElementById('precioProductoEdit').value);
+			var precioPorDiseno = parseNumber(document
+					.getElementById('precioPorDisenoEdit').value);
+			var precioPorTiempo = parseNumber(document
+					.getElementById('precioPorTiempoEdit').value);
+			var tiempoNecesario = parseNumber(document
+					.getElementById('tiempoNecesarioEdit').value);
+			var area = parseNumber(document.getElementById('areaEdit').value);
+			var calculo = ((precioProducto * cantidad * area)
+					+ (precioPorTiempo * tiempoNecesario) + (precioPorDiseno));
+			$('#subtotalEdit').val(calculo);
+		};
+
+		function parseNumber(number) {
+			return parseFloat(number.split('.').join('').replace(',', '.'))
+		}
+	</script>
+	<script type="text/javascript">
+		// 		var estadoPresupuesto = document.getElementById('estadoPresupuesto').value;
+		// 		var btnGuardar = document.getElementById('btnGuardar');
+		// 		var btnPagar = document.getElementById('btnPagar');
+		// 		var btnDescargar = document.getElementById('btnDescargar');
+		// 		var btnAprobar = document.getElementById('btnAprobar');
+		// 		var btnRechazar = document.getElementById('btnRechazar');
+
+		// 		if (estadoPresupuesto == 'true') {
+		// 			deshabilitarBoton(btnGuardar);
+		// 			deshabilitarBoton(btnAprobar);
+		// 			deshabilitarBoton(btnRechazar);
+		// 		} else if (estadoPresupuesto == 'false') {
+		// 			deshabilitarBoton(btnGuardar);
+		// 			deshabilitarBoton(btnPagar);
+		// 			deshabilitarBoton(btnAprobar);
+		// 			deshabilitarBoton(btnRechazar);
+		// 		} else {
+		// 			deshabilitarBoton(btnPagar);
+		// 		}
+
+		// 		function deshabilitarBoton(button) {
+		// 			if (button.nodeName === "BUTTON") {
+		// 				button.disabled = true;
+		// 				button.hidden = true;
+		// 			}
+
+		// 			if (button.nodeName === "A") {
+		// 				button.classList.add("disabled");
+		// 				button.hidden = true;
+		// 			}
+
+		// 		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<!-- Main Sidebar Container -->
+	<aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="sidebar">
+		<!-- SidebarSearch Form -->
+		<div sec:authorize="isAuthenticated()">
+			<div class="form-inline">
+				<div class="input-group" data-widget="sidebar-search">
+					<input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+					<div class="input-group-append">
+						<button class="btn btn-sidebar">
+							<i class="fas fa-search fa-fw"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- Sidebar Menu -->
+			<nav class="mt-2">
+				<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+					<!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+					<sec:authorize access="hasRol('SUPERVISOR', 'ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/configuracion/}" class="nav-link">
+								<i class="fas fa-cogs"></i>
+								<p>Configuracion</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('SUPERVISOR', 'ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/cotizacion/}" class="nav-link">
+								<i class="fas fa-money-bill-alt"></i>
+								<p>Cotizacion</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('SUPERVISOR', 'ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/empresa/}" class="nav-link">
+								<i class="fas fa-building"></i>
+								<p>Empresa</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/moneda/}" class="nav-link">
+								<i class="fas fa-coins"></i>
+								<p>Moneda</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('USUARIO', 'SUPERVISOR', 'ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/pago/reporteSimple/}" class="nav-link">
+								<i class="fas fa-wallet"></i>
+								<p>Pago</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/perfil/}" class="nav-link">
+								<i class="fas fa-id-badge"></i>
+								<p>Perfil</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('USUARIO', 'SUPERVISOR', 'ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/persona/}" class="nav-link">
+								<i class="fas fa-user-friends"></i>
+								<p>Persona</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('SUPERVISOR', 'ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/presupuesto/reporteSimple}" class="nav-link">
+								<i class="fas fa-file-invoice-dollar"></i>
+								<p>Presupuesto: Reporte Simple</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('SUPERVISOR', 'ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/presupuesto/reporteDetallado}" class="nav-link">
+								<i class="fas fa-file-invoice-dollar"></i>
+								<p>Presupuesto: Reporte Detallado</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('USUARIO', 'SUPERVISOR', 'ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/producto/}" class="nav-link">
+								<i class="fab fa-product-hunt"></i>
+								<p>Producto</p>
+							</a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="hasRol('SUPERVISOR','ADMINISTRADOR')">
+						<li class="nav-item">
+							<a th:href="@{/usuario/}" class="nav-link">
+								<i class="fas fa-user"></i>
+								<p>Usuario</p>
+							</a>
+						</li>
+					</sec:authorize>
+				</ul>
+			</nav>
+		</div>
+		<!-- /.sidebar-menu -->
+		</div>
+		<!-- /.sidebar -->
+	</aside>
+</body>
+</html>

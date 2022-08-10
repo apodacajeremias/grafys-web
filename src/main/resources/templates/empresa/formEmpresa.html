@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Empresa</title>
+<!--Bootstrap JS-->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/dist/css/adminlte.min.css}">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css}">
+
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+	<!-- Barra superior de navegacion -->
+	<div th:replace="fragments/navbar :: navbar"></div>
+	<!-- Barra lateral de menu -->
+	<div th:replace="fragments/sidebar :: sidebar"></div>
+	<div class="wrapper">
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0">Empresa</h1>
+						</div>
+						<!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item">
+									<a th:href="@{/}">Inicio</a>
+								</li>
+								<li class="breadcrumb-item active">Empresa</li>
+							</ol>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+			<!-- Main content -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<!-- Formulario -->
+						<div class="card">
+							<h4 class="card-header">
+								<strong th:text="${titulo}"></strong>
+							</h4>
+							<div class="card-body">
+								<form class="row g-3" th:action="@{/empresa/save}" th:object="${empresa}" method="post"
+									enctype="multipart/form-data">
+									<!-- GUARDAR ID -->
+									<input type="hidden" th:field="*{id}">
+									<input type="hidden" th:field="*{estado}">
+									<input type="hidden" th:field="*{fechaRegistro}">
+									<input type="hidden" th:field="*{registradoPor}">
+									<input type="hidden" th:field="*{logotipo}">
+									<div th:if="${#fields.hasErrors('*')}" class='alert alert-danger' role='alert'>
+										Por favor corrija los siguientes errores:
+										<ul>
+											<li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+										</ul>
+									</div>
+									<br>
+									<div class="col-md-12">
+										<label for="nombre" class="form-label">Nombre</label>
+										<input type="text" class="form-control" th:field="*{nombre}" id="nombre" name="nombre"
+											placeholder="Nombre">
+									</div>
+									<div class="col-md-12">
+										<label for="registroTributario" class="form-label">Registro Tributario</label>
+										<input type="text" class="form-control" th:field="*{registroTributario}" id="registroTributario"
+											name="registroTributario" placeholder="Registro Tributario">
+									</div>
+									<div class="col-md-12">
+										<label for="email" class="form-label">Correo</label>
+										<input type="email" class="form-control" th:field="*{email}" id="email" name="email" placeholder="Correo">
+									</div>
+									<div class="col-md-12">
+										<label for="telefono" class="form-label">Telefono</label>
+										<input type="tel" class="form-control" th:field="*{telefono}" id="telefono" name="telefono"
+											placeholder="Telefono">
+									</div>
+									<div class="col-md-12">
+										<label for="sitioWeb" class="form-label">Sitio web</label>
+										<input type="text" class="form-control" th:field="*{sitioWeb}" id="sitioWeb" name="sitioWeb"
+											placeholder="Sitio web">
+									</div>
+									<div class="col-md-12">
+										<label for="slogan" class="form-label">Slogan</label>
+										<input type="text" class="form-control" th:field="*{slogan}" id="slogan" name="slogan"
+											placeholder="Slogan">
+									</div>
+									<div class="col-md-12">
+										<label for="direccion" class="form-label">Direccion</label>
+										<input type="text" class="form-control" th:field="*{direccion}" id="direccion" name="direccion"
+											placeholder="Direccion">
+									</div>
+									<div class="col-md-6">
+										<label class="form-label" for="archivoImagen">Cargar</label>
+										<input type="file" class="form-control" name="archivoImagen" id="archivoImagen">
+									</div>
+									<div class="col-md-6">
+										<label for="vistaImagen">Imagen/Logo</label>
+										<img th:src="@{/logos/{img} (img=${empresa.logotipo})} " width="128px" height="64px" id="vistaImagen">
+									</div>
+									<div class="col-md-12">
+										<button type="submit" class="btn btn-primary float-right">Guardar</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<!-- /Formulario .card -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+		<!-- Control Sidebar -->
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Control sidebar content goes here -->
+		</aside>
+		<!-- /.control-sidebar -->
+	</div>
+	
+	<!--Bootstrap JS-->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.min.js}"></script>
+	<!-- jQuery -->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/jquery/jquery.min.js}"></script>
+	
+	<script th:src="@{/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- AdminLTE -->
+	<script th:src="@{/adminlte/dist/js/adminlte.min.js}"></script>
+	<script type="text/javascript">
+		function readURLLogo(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					$('#vistaImagen').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+		$("#archivoImagen").change(function() {
+			readURLLogo(this);
+		});
+	</script>
+</body>
+</html>

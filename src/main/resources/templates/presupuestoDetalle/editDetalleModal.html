@@ -1,0 +1,83 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="editDetalleModal" class="modal fade" id="editDetalleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Editar detalle</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form class="row g-3" th:action="@{/presupuesto/editDetalle}" method="post">
+						<!-- GUARDAR ID -->
+						<input type="hidden" id="idDetalleEdit" name="idDetalleEdit">
+						<input type="hidden" id="idPresupuestoEdit" name="idPresupuestoEdit">
+						<input type="hidden" id="productoUnidadCobroEdit" name="productoUnidadCobroEdit">
+						<br>
+						<div class="col-md-12">
+							<label for="producto" class="form-label">Producto</label>
+							<input type="text" id="productoNombreEdit" class="form-control" readonly>
+						</div>
+						<div class="col-md-12">
+							<label for="subtotalEdit" class="form-label">Subtotal</label>
+							<input type="text" id="subtotalEdit" class="form-control number" readonly>
+						</div>
+						<div class="col-md-6">
+							<label for="cantidad" class="form-label">Cantidad</label>
+							<input type="text" class="form-control number" id="cantidadEdit" name="cantidadEdit" onkeyup="calcularSubtotal()">
+						</div>
+						<div class="col-md-6">
+							<label for="precioProducto" class="form-label">Precio</label>
+							<input type="text" class="form-control number" id="precioProductoEdit" name="precioProductoEdit"
+								onkeyup="calcularSubtotal()">
+						</div>
+						<div class="col-md-4">
+							<label for="precioPorDiseno" class="form-label">Precio por diseño</label>
+							<input type="text" class="form-control number" id="precioPorDisenoEdit" name="precioPorDisenoEdit"
+								onkeyup="calcularSubtotal()">
+						</div>
+						<div class="col-md-4">
+							<label for="precioPorTiempo" class="form-label">Precio por Hora</label>
+							<input type="text" class="form-control number" id="precioPorTiempoEdit" name="precioPorTiempoEdit"
+								onkeyup="calcularSubtotal()">
+						</div>
+						<div class="col-md-4">
+							<label for="tiempoNecesario" class="form-label">Horas necesarias</label>
+							<input type="text" class="form-control number" id="tiempoNecesarioEdit" name="tiempoNecesarioEdit"
+								onkeyup="calcularSubtotal()">
+						</div>
+						<div class="col-md-4">
+							<label for="alto" class="form-label">Alto CM</label>
+							<input type="text" class="form-control number" id="altoEdit" name="altoEdit" onkeyup="calcularSubtotal()">
+						</div>
+						<div class="col-md-4">
+							<label for="ancho" class="form-label">Ancho CM</label>
+							<input type="text" class="form-control number" id="anchoEdit" name="anchoEdit" onkeyup="calcularSubtotal()">
+						</div>
+						<div class="col-md-4">
+							<label for="area" class="form-label">Area MT2</label>
+							<input type="text" class="form-control decimal" id="areaEdit" readonly>
+						</div>
+						<div class="col-md-12">
+							<label for="anotacion" class="form-label">Observacion</label>
+							<textarea class="form-control" rows="3" id="anotacionEdit" name="anotacionEdit"></textarea>
+						</div>
+						<!-- TODO: ENLAZAR ARCHIVO CON REGISTRO -->
+						<div class="col-md-12">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary float-right">Guardar</button>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

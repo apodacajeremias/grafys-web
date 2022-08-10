@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usuario</title>
+<!--Bootstrap JS-->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/dist/css/adminlte.min.css}">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css}">
+
+
+<!-- SELECT2 -->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+	<!-- Barra superior de navegacion -->
+	<div th:replace="fragments/navbar :: navbar"></div>
+	<!-- Barra lateral de menu -->
+	<div th:replace="fragments/sidebar :: sidebar"></div>
+	<div class="wrapper">
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0">Usuario</h1>
+						</div>
+						<!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item">
+									<a th:href="@{/usuario/}">Lista</a>
+								</li>
+								<li class="breadcrumb-item active">Formulario</li>
+							</ol>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+			<!-- Main content -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<!-- Formulario -->
+						<div class="card">
+							<h4 class="card-header">
+								<strong th:if="${titulo == null}">Crear nuevo registro</strong> <strong th:unless="${titulo == null}"
+									th:text="${titulo}"></strong>
+							</h4>
+							<div class="card-body">
+								<form class="row g-3" th:action="@{/usuario/save}" th:object="${usuario}" method="post"
+									enctype="multipart/form-data">
+									<!-- GUARDAR ID -->
+									<input type="hidden" th:field="*{id}">
+									<input type="hidden" th:field="*{estado}">
+									<input type="hidden" th:field="*{fechaRegistro}">
+									<input type="hidden" th:field="*{registradoPor}">
+
+									<div th:if="${#fields.hasErrors('*')}" class='alert alert-danger' role='alert'>
+										Por favor corrija los siguientes errores:
+										<ul>
+											<li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+										</ul>
+									</div>
+									<br>
+									<div class="col-md-12">
+										<label for="nombre" class="form-label">Nombre</label>
+										<input type="text" class="form-control" th:field="*{nombre}" id="nombre" name="nombre" placeholder=""
+											required>
+									</div>
+									<div class="col-md-12">
+										<label for="username" class="form-label">Usuario</label>
+										<input type="text" class="form-control" th:field="*{username}" id="username" name="username"
+											placeholder="" required>
+									</div>
+									<div class="col-md-12">
+										<label for="password" class="form-label">Contraseña</label>
+										<input type="password" class="form-control" th:value="*{password}" id="password" name="password" required>
+									</div>
+									<div class="col-md-12">
+										<label for="email" class="form-label">Correo</label>
+										<input type="text" class="form-control" th:field="*{email}" id="email" name="email" placeholder=""
+											required>
+									</div>
+									<security:authorize access="hasAnyRole('SUPERVISOR', 'ADMINISTRADOR')">
+										<div class="col-md-12">
+											<label for="idioma" class="form-label">Perfiles</label>
+											<select th:field="*{perfiles}" class="form-select searchableSelectorMultiple" required>
+												<!-- 												<option th:value="${null}" selected>Seleccione</option> -->
+												<option th:each="perfil: ${perfiles}" th:value="${perfil.id}" th:text="${perfil.nombre}"></option>
+											</select>
+										</div>
+									</security:authorize>
+									<div class="col-md-12">
+										<button type="submit" class="btn btn-primary float-right">Guardar</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<!-- /Formulario .card -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+		<!-- Control Sidebar -->
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Control sidebar content goes here -->
+		</aside>
+		<!-- /.control-sidebar -->
+	</div>
+	
+	<!--Bootstrap JS-->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.min.js}"></script>
+	<!-- jQuery -->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/jquery/jquery.min.js}"></script>
+	
+	<script th:src="@{/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- AdminLTE -->
+	<script th:src="@{/adminlte/dist/js/adminlte.min.js}"></script>
+	<!-- SELECT2 -->
+	<script th:src="@{/select2/js/select2.min.js}"></script>
+	<!-- MAIN -->
+	<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

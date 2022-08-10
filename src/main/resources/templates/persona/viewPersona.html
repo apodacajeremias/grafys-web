@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Persona</title>
+<!--Bootstrap JS-->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/dist/css/adminlte.min.css}">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" th:href="@{/AdminLTE-3.2.0/plugins/fontawesome-free/css/all.min.css}">
+
+
+</head>
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+		<!-- Navbar -->
+		<nav th:replace="fragments/navbar :: navbar"></nav>
+		<!-- /.navbar -->
+		<!-- Main Sidebar Container -->
+		<aside th:replace="fragments/sidebar :: sidebar"></aside>
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1>Perfil</h1>
+						</div>
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item">
+									<a th:href="@{/}">Inicio</a>
+								</li>
+								<li class="breadcrumb-item active">Perfil de persona</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3">
+							<!-- Guardamos el objeto de la persona -->
+							<input type="hidden" th:object="${persona}">
+							<!-- Profile Image -->
+							<div class="card card-primary card-outline">
+								<div class="card-body box-profile">
+									<div class="text-center">
+										<!-- Icon padron -->
+										<i class="fa-solid fa-circle-user fa-6x"></i>
+									</div>
+									<h3 class="profile-username text-center" th:text="${persona.nombre}">Nina Mcintire</h3>
+									<p class="text-muted text-center" th:text="${persona.telefono}">Software Engineer</p>
+									<ul class="list-group list-group-unbordered mb-3">
+										<li class="list-group-item">
+											<b>Presupuestos</b>
+											<a class="float-right" th:text="${ultimosPresupuestos.getNumberOfElements()}"> 543</a>
+										</li>
+										<li class="list-group-item">
+											<b>Pagos</b>
+											<a class="float-right" th:text="${ultimosPagos.getNumberOfElements()}">13,287</a>
+										</li>
+									</ul>
+									<div class="text-center mb-1">
+										<a th:href="@{/presupuesto/create/{idPersona} (idPersona=${persona.id})}" class="btn btn-primary">
+											<i class="fa-solid fa-list-check"></i>
+											<b>Generar presupuesto</b>
+										</a>
+									</div>
+									<div class="text-center mb-1">
+										<a class="btn btn-light">
+											<i class="fa-solid fa-list-check"></i>
+											<b>Generar pago</b>
+										</a>
+									</div>
+								</div>
+								<!-- /.card-body -->
+							</div>
+							<!-- /.card -->
+							<!-- About Me Box -->
+							<div class="card card-primary">
+								<div class="card-header">
+									<h3 class="card-title">Sobre mi</h3>
+								</div>
+								<!-- /.card-header -->
+								<div class="card-body">
+									<strong> <i class="fas fa-book mr-1"></i> Documento
+									</strong>
+									<p th:text="${persona.registroTributario}" class="text-muted"></p>
+									<hr>
+									<strong> <i class="fas fa-map-marker-alt mr-1"></i> Direccion
+									</strong>
+									<p th:text="${persona.direccion}" class="text-muted"></p>
+									<hr>
+									<strong> <i class="fas fa-pencil-alt mr-1"></i> Categoria
+									</strong>
+									<p class="text-muted">
+										<span th:if="${persona.esProveedor == true}" class="badge bg-warning text-dark">Es un proveedor</span>
+										<span th:unless="${persona.esProveedor == true}" class="badge bg-info text-dark">No es proveedor</span>
+										<br>
+										<span th:if="${persona.esEmpresa == true}" class="badge bg-warning text-dark">Es una empresa</span>
+										<span th:unless="${persona.esEmpresa == true}" class="badge bg-info text-dark">No es empresa</span>
+									</p>
+									<hr>
+									<strong> <i class="far fa-file-alt mr-1"></i> Observaciones
+									</strong>
+									<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim
+										neque.</p>
+								</div>
+								<!-- /.card-body -->
+							</div>
+							<!-- /.card -->
+						</div>
+						<!-- /.col -->
+						<div class="col-md-9">
+							<div class="card">
+								<div class="card-header p-2">
+									<ul class="nav nav-pills">
+										<li class="nav-item">
+											<a class="nav-link active" href="#presupuesto" data-toggle="tab">Presupuestos</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#pagos" data-toggle="tab">Pagos</a>
+										</li>
+									</ul>
+								</div>
+								<!-- /.card-header -->
+								<div class="card-body">
+									<div class="tab-content">
+										<div class="active tab-pane" id="presupuesto">
+											<!-- Post -->
+											<div class="post" th:each="presupuesto:${ultimosPresupuestos}">
+												<div class="user-block">
+													<span class="username">
+														<a th:href="@{/presupuesto/edit/{id}(id=${presupuesto.id})}">[['Presupuesto
+															#'+${presupuesto.id}]]</a>
+														<a class="float-right btn-tool">
+															<i class="fas fa-times"></i>
+														</a>
+													</span>
+													<span class="description">[['Fecha de registro '+${presupuesto.fechaRegistro}]]</span>
+												</div>
+												<!-- /.user-block -->
+												<p>
+													<span th:if="${presupuesto.estado == null}" class="badge bg-light text-dark">Pendiente</span>
+													<span th:if="${presupuesto.estado == true}" class="badge bg-warning text-dark">Aprobado</span>
+													<span th:if="${presupuesto.estado == false}" class="badge bg-danger">Rechazado</span>
+													<span class="badge bg-primary">[['Registrado por '+${presupuesto.registradoPor}]]</span>
+													<br>
+													<span class="badge bg-light text-dark">[['Sumatoria: '+${presupuesto.sumatoria}]]</span>
+													<span class="badge bg-light text-dark">[['Descuento: '+${presupuesto.descuento}]]</span>
+													<span class="badge bg-light text-dark">[['Total: '+${presupuesto.total}]]</span>
+												</p>
+												<p>
+													<a th:if="${presupuesto.estado == true}"
+														th:href="@{/presupuesto/view/{idPresupuesto}(idPresupuesto=${presupuesto.id})}"
+														class="link-black text-sm">
+														<i class="fas fa-share mr-1"></i>
+														Compartir
+													</a>
+													<a th:if="${presupuesto.estado == null}"
+														th:href="@{/presupuesto/approve/{idPresupuesto}(idPresupuesto=${presupuesto.id})}"
+														class="link-black text-sm">
+														<i class="fa-solid fa-circle-check"></i>
+														Aprobar
+													</a>
+													<a th:if="${presupuesto.estado == null}"
+														th:href="@{/presupuesto/reject/{idPresupuesto}(idPresupuesto=${presupuesto.id})}"
+														class="link-black text-sm">
+														<i class="fa-solid fa-circle-xmark"></i>
+														Rechazar
+													</a>
+													<a th:if="${presupuesto.estado == true}"
+														th:href="@{/pago/create/{idPresupuesto}(idPresupuesto=${presupuesto.id})}" class="link-black text-sm">
+														<i class="fa-solid fa-money-bill-transfer"></i>
+														Generar pago
+													</a>
+												</p>
+											</div>
+											<!-- /.post -->
+										</div>
+										<!-- /.tab-pane -->
+										<div class="tab-pane" id="pagos">
+											<!-- Post -->
+											<div class="post" th:each="pago:${ultimosPagos}">
+												<div class="user-block">
+													<!-- 													<img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image"> -->
+													<span class="username">
+														<a th:href="@{/pago/view/{id}(id=${pago.id})}">[['Pago #'+${pago.id}]]</a>
+														<a class="float-right btn-tool">
+															<i class="fas fa-times"></i>
+														</a>
+													</span>
+													<span class="description">[['Fecha de registro '+${pago.fechaRegistro}]]</span>
+												</div>
+												<!-- /.user-block -->
+												<p>
+													<span th:if="${pago.estado == true}" class="badge bg-warning text-dark">Vigente</span>
+													<span th:unless="${pago.estado == true}" class="badge bg-danger">Anulado</span>
+													<span class="badge bg-primary">[['Registrado por '+${pago.registradoPor}]]</span>
+													<br>
+													<span class="badge bg-light text-dark">[['Valor de pago: '+${pago.valor}+'
+														'+${pago.moneda.simbolo}]]</span>
+													<span class="badge bg-light text-dark">[['Presupuesto: #'+${pago.presupuesto.id}]]</span>
+													<br>
+													<span th:if="${pago.esGasto == true}" class="badge bg-warning text-dark">No es gasto</span>
+													<span th:unless="${pago.esGasto == true}" class="badge bg-danger">Es gasto</span>
+													<br>
+												</p>
+												<div class="form-floating">
+													<textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea">[['Anotacion: '+${pago.anotacion}]]</textarea>
+													<label for="floatingTextarea">Anotacion</label>
+												</div>
+											</div>
+											<!-- /.post -->
+										</div>
+										<!-- /.tab-pane -->
+									</div>
+									<!-- /.tab-content -->
+								</div>
+								<!-- /.card-body -->
+							</div>
+							<!-- /.card -->
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+		<!-- /.content-wrapper -->
+		<!-- Control Sidebar -->
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Control sidebar content goes here -->
+		</aside>
+		<!-- /.control-sidebar -->
+	</div>
+	
+	<!--Bootstrap JS-->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.min.js}"></script>
+	<!-- jQuery -->
+	<script th:src="@{/AdminLTE-3.2.0/plugins/jquery/jquery.min.js}"></script>
+	
+	<script th:src="@{/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<!-- AdminLTE -->
+	<script th:src="@{/adminlte/dist/js/adminlte.min.js}"></script>
+</body>
+</html>
