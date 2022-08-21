@@ -295,7 +295,7 @@ public class HomeController {
 			if (!this.monedaService.existeMoneda(moneda.getKey())) {
 				String nombre = moneda.getKey();
 				String simbolo = moneda.getValue();
-				this.monedaService.guardar(new Moneda(nombre, simbolo));
+				this.monedaService.guardar(new Moneda(nombre));
 			}
 		}
 	}

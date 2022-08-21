@@ -19,6 +19,43 @@ public class MedioPago extends Auditable<String> {
 	private String nombre;
 
 	@Column(columnDefinition = "TEXT")
-	private String detallePago;
+	private String informacion;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getInformacion() {
+		return informacion;
+	}
+
+	public void setInformacion(String informacion) {
+		this.informacion = informacion;
+	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
 
 }

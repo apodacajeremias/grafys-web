@@ -1,6 +1,7 @@
 package podac.tech.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import podac.tech.model.Configuracion;
 
 public interface IConfiguracionService {
+	
 	void guardar(Configuracion objeto);
 
 	void eliminar(Long id);
@@ -19,6 +21,8 @@ public interface IConfiguracionService {
 	Page<Configuracion> buscarTodas(Pageable page);
 
 	Configuracion ultimoRegistro();
+
+	Optional<Configuracion> ultimoRegistroOptional();
 
 	boolean estaVacio();
 

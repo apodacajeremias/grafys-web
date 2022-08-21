@@ -21,31 +21,20 @@ public class Moneda extends Auditable<String> {
 	@Column
 	private String nombre;
 
-	@Column
-	private String simbolo;
-
-	@Column
-	private String formato;
-
 	public Moneda() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Moneda(String nombre, String simbolo) {
+	public Moneda(String nombre) {
 		super();
 		this.nombre = nombre;
-		this.simbolo = simbolo;
 	}
-	
-	
 
-	public Moneda(Long id, boolean estado, String nombre, String simbolo, String formato) {
+	public Moneda(Long id, boolean estado, String nombre) {
 		super();
 		this.id = id;
 		this.estado = estado;
 		this.nombre = nombre;
-		this.simbolo = simbolo;
-		this.formato = formato;
 	}
 
 	public Moneda(Long id) {
@@ -53,7 +42,6 @@ public class Moneda extends Auditable<String> {
 		this.id = id;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -77,26 +65,4 @@ public class Moneda extends Auditable<String> {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-	public String getSimbolo() {
-		return simbolo;
-	}
-
-	public void setSimbolo(String simbolo) {
-		this.simbolo = simbolo;
-	}
-
-	public String getFormato() {
-		return formato;
-	}
-
-	public void setFormato(String formato) {
-		this.formato = formato;
-	}
-
-	@Override
-	public String toString() {
-		return simbolo;
-	}
-
 }

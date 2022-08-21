@@ -2,6 +2,7 @@ package podac.tech.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import podac.tech.model.Configuracion;
@@ -24,7 +26,7 @@ public class ConfiguracionController {
 
 	// Inyectamos una instancia desde nuestro ApplicationContext
 	@Autowired
-	private IConfiguracionService serviceConfiguracion;
+	private IConfiguracionService configuracionService;
 
 	@Autowired
 	private IMonedaService monedaService;
@@ -36,7 +38,7 @@ public class ConfiguracionController {
 	 * @param page
 	 * @return
 	 */
-	@GetMapping({ "/", "/index", "/indexPaginate" })
+	@GetMapping({ "/", "/index", "/indexPaginate", "" })
 	public String mostrarIndex(Model model) {
 		// CONFIGURACION NO TIENE PAGINACION NI INDEX TIENE QUE IR DIRECTO AL /CREATE
 		return "redirect:/configuracion/create";
@@ -52,7 +54,7 @@ public class ConfiguracionController {
 	public String crear(Configuracion configuracion, Model model) {
 		// VERIFICAR SI YA EXISTE CONFIGURACION
 		// SI NO EXISTE ENTONCES MANDAR AL FORMULARIO VACIO
-		if (this.serviceConfiguracion.estaVacio()) {
+		if (this.configuracionService.estaVacio()) {
 			model.addAttribute("titulo", "Crear nueva configuracion");
 			return "configuracion/formConfiguracion";
 		} else {
@@ -79,12 +81,12 @@ public class ConfiguracionController {
 		}
 
 		// Si registro NO EXISTE
-		if (!this.serviceConfiguracion.existe(configuracion.getId())) {
+		if (!this.configuracionService.existe(configuracion.getId())) {
 			configuracion.setEstado(true);
 		}
 
 		// Guadamos el objeto Configuracion en la bd
-		serviceConfiguracion.guardar(configuracion);
+		configuracionService.guardar(configuracion);
 		attributes.addFlashAttribute("msg", "Los datos de la configuracion fueron guardados!");
 
 		// return "redirect:/Configuracion/index";
@@ -104,7 +106,7 @@ public class ConfiguracionController {
 	@GetMapping("/edit")
 	public String editar(Model model) {
 		model.addAttribute("titulo", "Editar configuracion existente");
-		model.addAttribute("configuracion", this.serviceConfiguracion.ultimoRegistro());
+		model.addAttribute("configuracion", this.configuracionService.ultimoRegistro());
 		return "configuracion/formConfiguracion";
 	}
 
@@ -118,9 +120,29 @@ public class ConfiguracionController {
 		List<String> idiomas = new ArrayList<>();
 		idiomas.add("ES");
 		// TODO: AVERIGUAR COMO TRADUCIR PAGINA PARA OTRO IDIOMA
-//		idiomas.add("EN");
-//		idiomas.add("PT");
+		// idiomas.add("EN");
+		// idiomas.add("PT");
 		return idiomas;
+	}
+
+	@GetMapping("/get")
+	@ResponseBody
+	public Configuracion ultimaConfiguracion() {
+		return this.configuracionService.ultimoRegistro();
+	}
+
+	@RequestMapping("/getOne")
+	@ResponseBody
+	public Optional<Configuracion> getOne() {
+		Optional<Configuracion> cfgOpt = Optional.of(this.configuracionService.ultimoRegistro());
+		return cfgOpt;
+	}
+
+	@RequestMapping("/getLast")
+	@ResponseBody
+	public Optional<Configuracion> getLast() {
+		Optional<Configuracion> cfgOpt = Optional.of(this.configuracionService.ultimoRegistro());
+		return cfgOpt;
 	}
 
 }
