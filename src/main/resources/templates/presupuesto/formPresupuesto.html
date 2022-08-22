@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title th:text="${tituloPagina}">Presupuesto Nuevo</title>
-<!--Select2 CSS-->
-<link rel="stylesheet" th:href="@{/adminlte/plugins/select2/css/select2.min.css}">
-<link rel="stylesheet" th:href="@{/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
-<!-- AdminLTE CSS -->
-<link rel="stylesheet" th:href="@{/adminlte/dist/css/adminlte.min.css}">
-<!-- Google Font: Source Sans Pro -->
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-<!-- Font Awesome Icons CSS -->
-<link rel="stylesheet" th:href="@{/adminlte/plugins/fontawesome-free/css/all.min.css}">
-<!-- AdminLTE Datatables CSS -->
-<link rel="stylesheet" th:href="@{/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
-<link rel="stylesheet" th:href="@{/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title th:text="${tituloPagina}">Presupuesto Nuevo</title>
+	<!--Select2 CSS-->
+	<link rel="stylesheet" th:href="@{/adminlte/plugins/select2/css/select2.min.css}">
+	<link rel="stylesheet" th:href="@{/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+	<!-- AdminLTE CSS -->
+	<link rel="stylesheet" th:href="@{/adminlte/dist/css/adminlte.min.css}">
+	<!-- Google Font: Source Sans Pro -->
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+	<!-- Font Awesome Icons CSS -->
+	<link rel="stylesheet" th:href="@{/adminlte/plugins/fontawesome-free/css/all.min.css}">
+	<!-- AdminLTE Datatables CSS -->
+	<link rel="stylesheet" th:href="@{/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+	<link rel="stylesheet" th:href="@{/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
-	<a th:href="@{/configuracion/get}" type="hidden" id="URLConfiguracion">AAA</a>
 	<!-- Barra superior de navegacion -->
 	<div th:replace="fragments/navbar :: navbar"></div>
 	<!-- Barra lateral de menu -->
@@ -57,10 +58,11 @@
 								<form class="row g-3" th:action="@{/presupuesto/save}" th:object="${presupuesto}"
 									th:method="${presupuesto.id == null} ? 'POST': 'PUT'">
 									<h4 class="card-header">
-										<strong th:if="${tituloFormulario == null}">Crear nuevo registro</strong> <strong
-											th:unless="${tituloFormulario == null}" th:text="${tituloFormulario}"></strong>
-										<button th:if="${presupuesto.estado == null}" class="btn btn-primary float-right" type="submit"
-											id="btnGuardar">
+										<strong th:if="${tituloFormulario == null}">Crear nuevo registro</strong>
+										<strong th:unless="${tituloFormulario == null}"
+											th:text="${tituloFormulario}"></strong>
+										<button th:if="${presupuesto.estado == null}"
+											class="btn btn-primary float-right" type="submit" id="btnGuardar">
 											<i class="fa-solid fa-floppy-disk"></i>
 											Guardar
 										</button>
@@ -84,66 +86,74 @@
 										</a>
 										<a th:if="${presupuesto.estado == null} and ${presupuesto.id != null}"
 											th:href="@{/presupuesto/reject/idPresupuesto(idPresupuesto=${presupuesto.id})}"
-											class="btn btn-danger float-right" id="btnRechazar" th:disabled="${presupuesto.estado}">
+											class="btn btn-danger float-right" id="btnRechazar"
+											th:disabled="${presupuesto.estado}">
 											<i class="fa-solid fa-download"></i>
 											Rechazar
 										</a>
 									</h4>
 									<!-- GUARDAR ID -->
 									<input th:field="${presupuesto.id}" type="hidden">
-									<input th:field="${presupuesto.cliente.id}" type="hidden">
-									<input th:field="${presupuesto.fechaRegistro}" type="hidden">
-									<input th:field="${presupuesto.estado}" th:value="${presupuesto.estado}" type="hidden"
-										id="estadoPresupuesto">
 									<div th:if="${#fields.hasErrors('*')}" class='alert alert-danger' role='alert'>
 										Por favor corrija los siguientes errores:
 										<ul>
 											<li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
 										</ul>
 									</div>
-									<br>
-									<div class="col-md-4">
-										<label for="id" class="form-label">ID</label>
-										<input th:field="*{id}" type="text" class="form-control" name="idPresupuestoUpdate"
-											id="idPresupuestoUpdate" readonly>
-									</div>
-									<div class="col-md-4">
-										<label for="fechaRegistro" class="form-label">Fecha de Registro</label>
-										<input th:field="*{fechaRegistro}" type="text" class="form-control" readonly>
-									</div>
-									<div class="col-md-4">
-										<label for="estado" class="form-label">Estado</label>
-										<input th:if="*{estado == null}" type="text" class="form-control" th:value="PENDIENTE" readonly>
-										<input th:if="*{estado == true}" type="text" class="form-control" th:value="APROBADO" readonly>
-										<input th:if="*{estado == false}" type="text" class="form-control" th:value="RECHAZADO" readonly>
-									</div>
-									<br>
 									<div class="col-md-6">
-										<label for="clienteSelect" class="form-label">Cliente</label>
-										<select th:field="*{cliente.id}" class="form-select searchableSelector" id="clienteSelect"
-											th:disabled="${presupuesto.cliente.id != null}">
-											<option th:each="clie : ${clientes}" th:value="${clie.id}" th:text="${clie.nombre}"></option>
-										</select>
+										<div class="form-group">
+											<label for="id">ID</label>
+											<input th:field="*{id}" type="text" class="form-control"
+												name="idPresupuestoUpdate" id="idPresupuestoUpdate" readonly>
+										</div>
+										<div class="form-group">
+											<label for="fechaRegistro">Fecha de Registro</label>
+											<input th:field="*{fechaRegistro}" type="text" class="form-control"
+												readonly>
+										</div>
+										<div class="form-group">
+											<label for="estado">Estado</label>
+											<input th:if="*{estado == null}" type="text" class="form-control"
+												th:value="PENDIENTE" readonly>
+											<input th:if="*{estado == true}" type="text" class="form-control"
+												th:value="APROBADO" readonly>
+											<input th:if="*{estado == false}" type="text" class="form-control"
+												th:value="RECHAZADO" readonly>
+										</div>
+
+										<div class="form-group">
+											<label for="clienteSelect">Cliente</label>
+											<select th:field="*{cliente.id}" class="form-control select2"
+												style="width: 100%;" id="clienteSelect"
+												th:disabled="${presupuesto.cliente.id != null}">
+												<option th:each="clie : ${clientes}" th:value="${clie.id}"
+													th:text="${clie.nombre}"></option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="registradoPor">Vendedor</label>
+											<input type="text" class="form-control" th:field="*{registradoPor}"
+												id="registradoPor" name="registradoPor" readonly>
+										</div>
 									</div>
 									<div class="col-md-6">
-										<label for="registradoPor" class="form-label">Vendedor</label>
-										<input type="text" class="form-control" th:field="*{registradoPor}" id="registradoPor"
-											name="registradoPor" readonly>
-									</div>
-									<br>
-									<div class="col-md-3">
-										<label for="sumatoria" class="form-label">Sumatoria</label>
-										<input type="text" class="form-control number" th:field="*{sumatoria}" id="sumatoria" name="sumatoria"
-											readonly>
-									</div>
-									<div class="col-md-3">
-										<label for="descuento" class="form-label">Descuento</label>
-										<input type="text" class="form-control number" th:field="*{descuento}" id="descuento" name="descuento"
-											th:readonly="${presupuesto.id == null or presupuesto.estado != null}" onkeyup="calcularTotal()">
-									</div>
-									<div class="col-md-3">
-										<label for="total" class="form-label">Total</label>
-										<input type="text" class="form-control number" th:field="*{total}" id="total" name="total" readonly>
+										<div class="form-group">
+											<label for="sumatoria">Sumatoria</label>
+											<input type="text" class="form-control number" th:field="*{sumatoria}"
+												id="sumatoria" name="sumatoria" readonly>
+										</div>
+										<div class="form-group">
+											<label for="descuento">Descuento</label>
+											<input type="text" class="form-control number" th:field="*{descuento}"
+												id="descuento" name="descuento"
+												th:readonly="${presupuesto.id == null or presupuesto.estado != null}"
+												onkeyup="calcularTotal()">
+										</div>
+										<div class="form-group">
+											<label for="total">Total</label>
+											<input type="text" class="form-control number" th:field="*{total}"
+												id="total" name="total" readonly>
+										</div>
 									</div>
 								</form>
 								<!-- /.Formulario -->
@@ -157,10 +167,12 @@
 								<h4 class="card-header">
 									<strong>Agregar producto</strong>
 								</h4>
-								<form class="row g-3" th:action="@{/presupuesto/addDetalle}" th:object="${producto}" method="post">
+								<form class="row g-3" th:action="@{/presupuesto/addDetalle}" th:object="${producto}"
+									method="post">
 									<div class="input-group col-md-12">
-										<select th:field="*{id}" class="form-select searchableSelector" id="productoSelect"
-											aria-label="Floating label select example" required="required">
+										<select th:field="*{id}" class="form-select searchableSelector"
+											id="productoSelect" aria-label="Floating label select example"
+											required="required">
 											<option th:value="${null}" selected>Seleccione producto</option>
 											<option th:each="prod : ${productos}" th:value="${prod.id}"
 												th:text="${prod.nombre}+' x '+${prod.unidadCobro}"></option>
@@ -201,10 +213,12 @@
 									<tbody>
 										<tr th:each="detalle, stat : ${presupuesto.detalles}">
 											<td colspan="1">
-												<a class="btn btn-warning abrirModal btn-sm" th:href="@{/presupuesto/getOne/(id=${detalle.id})}">
+												<a class="btn btn-warning abrirModal btn-sm"
+													th:href="@{/presupuesto/getOne/(id=${detalle.id})}">
 													<i class="fa-solid fa-pen-to-square"></i>
 												</a>
-												<a class="btn btn-danger btn-sm" th:href="@{/presupuesto/removeDetalle/{id}(id=${detalle.id})}">
+												<a class="btn btn-danger btn-sm"
+													th:href="@{/presupuesto/removeDetalle/{id}(id=${detalle.id})}">
 													<i class="fa-solid fa-circle-minus"></i>
 												</a>
 											</td>
@@ -266,156 +280,9 @@
 	<script th:src="@{/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
 	<!-- FORMATO DE NUMERO -->
 	<script th:src="@{/autonumeric/autoNumeric.min.js}"></script>
+	<script th:src="@{/js/Util.js}"></script>
 	<script th:src="@{/js/Presupuesto.js}"></script>
-	<!-- <script>
-		$(function() {
-			$("table").DataTable({
-				"paging" : false,
-				"lengthChange" : false,
-				"searching" : false,
-				"ordering" : false,
-				"info" : false,
-				"autoWidth" : false,
-				"responsive" : true,
-			});
 
-		});
-	</script>
-	<script type="text/javascript">
-		const autoNumeric = new AutoNumeric.multiple('.number', {
-			decimalPlaces : 0,
-			decimalCharacter : ",",
-			digitGroupSeparator : ".",
-			unformatOnSubmit : true,
-			watchExternalChanges : true
-		});
-
-		const autoNumericDecimal = new AutoNumeric.multiple('.decimal', {
-			decimalPlaces : 2,
-			decimalCharacter : ",",
-			digitGroupSeparator : ".",
-			unformatOnSubmit : true,
-			watchExternalChanges : true
-		});
-	</script> -->
-	<script type="text/javascript">
-		//Accion para rr y cargar modal de edicion de detalle
-		$('.abrirModal').on(
-				'click',
-				function(event) {
-					event.preventDefault();
-					var href = $(this).attr('href');
-					$.get(href, function(detalle, status) {
-						$('#subtotalEdit').val(detalle.subtotal);
-						$('#idDetalleEdit').val(detalle.id);
-						$('#idPresupuestoEdit').val(detalle.presupuesto.id);
-						$('#productoNombreEdit').val(detalle.producto.nombre);
-						$('#productoUnidadCobroEdit').val(
-								detalle.producto.unidadCobro);
-						$('#cantidadEdit').val(detalle.cantidad);
-						$('#precioProductoEdit').val(detalle.precioProducto);
-						$('#precioPorDisenoEdit').val(detalle.precioPorDiseno);
-						$('#precioPorTiempoEdit').val(detalle.precioPorTiempo);
-						$('#tiempoNecesarioEdit').val(detalle.tiempoNecesario);
-						$('#altoEdit').val(detalle.alto);
-						$('#anchoEdit').val(detalle.ancho);
-						$('#areaEdit').val(detalle.area);
-						$('#anotacionEdit').val(detalle.anotacion);
-						if (detalle.producto.unidadCobro == 'UN') {
-							$('#altoEdit').prop('readonly', true);
-							$('#anchoEdit').prop('readonly', true);
-						}
-						if (detalle.producto.unidadCobro == 'ML') {
-							$('#altoEdit').prop('readonly', false);
-							$('#anchoEdit').prop('readonly', true);
-						}
-						if (detalle.producto.unidadCobro == 'M2') {
-							$('#altoEdit').prop('readonly', false);
-							$('#anchoEdit').prop('readonly', false);
-						}
-					});
-					$('#editDetalleModal').modal('show');
-				});
-	</script>
-	<script type="text/javascript">
-		function calcularArea() {
-			var unidadCobro = document
-					.getElementById('productoUnidadCobroEdit').value;
-			var alto = parseNumber(document.getElementById('altoEdit').value);
-			var ancho = parseNumber(document.getElementById('anchoEdit').value);
-			if (unidadCobro == 'UN') {
-				$('#areaEdit').val(1);
-			}
-			if (unidadCobro == 'M2') {
-				$('#areaEdit').val(alto * ancho / 10000);
-			}
-			if (unidadCobro == 'ML') {
-				$('#areaEdit').val(alto / 100);
-			}
-		};
-
-		function calcularTotal() {
-			var sumatoria = parseNumber((document.getElementById('sumatoria').value));
-			var descuento = parseNumber((document.getElementById('descuento').value));
-			$('#total').val((sumatoria - descuento));
-		}
-
-		function calcularSubtotal() {
-			calcularArea();
-			var unidadCobro = parseNumber(document
-					.getElementById('productoUnidadCobroEdit').value);
-			var cantidad = parseNumber(document.getElementById('cantidadEdit').value);
-			var precioProducto = parseNumber(document
-					.getElementById('precioProductoEdit').value);
-			var precioPorDiseno = parseNumber(document
-					.getElementById('precioPorDisenoEdit').value);
-			var precioPorTiempo = parseNumber(document
-					.getElementById('precioPorTiempoEdit').value);
-			var tiempoNecesario = parseNumber(document
-					.getElementById('tiempoNecesarioEdit').value);
-			var area = parseNumber(document.getElementById('areaEdit').value);
-			var calculo = ((precioProducto * cantidad * area)
-					+ (precioPorTiempo * tiempoNecesario) + (precioPorDiseno));
-			$('#subtotalEdit').val(calculo);
-		};
-
-		function parseNumber(number) {
-			return parseFloat(number.split('.').join('').replace(',', '.'))
-		}
-	</script>
-	<script type="text/javascript">
-		// 		var estadoPresupuesto = document.getElementById('estadoPresupuesto').value;
-		// 		var btnGuardar = document.getElementById('btnGuardar');
-		// 		var btnPagar = document.getElementById('btnPagar');
-		// 		var btnDescargar = document.getElementById('btnDescargar');
-		// 		var btnAprobar = document.getElementById('btnAprobar');
-		// 		var btnRechazar = document.getElementById('btnRechazar');
-
-		// 		if (estadoPresupuesto == 'true') {
-		// 			deshabilitarBoton(btnGuardar);
-		// 			deshabilitarBoton(btnAprobar);
-		// 			deshabilitarBoton(btnRechazar);
-		// 		} else if (estadoPresupuesto == 'false') {
-		// 			deshabilitarBoton(btnGuardar);
-		// 			deshabilitarBoton(btnPagar);
-		// 			deshabilitarBoton(btnAprobar);
-		// 			deshabilitarBoton(btnRechazar);
-		// 		} else {
-		// 			deshabilitarBoton(btnPagar);
-		// 		}
-
-		// 		function deshabilitarBoton(button) {
-		// 			if (button.nodeName === "BUTTON") {
-		// 				button.disabled = true;
-		// 				button.hidden = true;
-		// 			}
-
-		// 			if (button.nodeName === "A") {
-		// 				button.classList.add("disabled");
-		// 				button.hidden = true;
-		// 			}
-
-		// 		}
-	</script>
 </body>
+
 </html>
