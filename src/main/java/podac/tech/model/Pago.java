@@ -40,7 +40,7 @@ public class Pago extends Auditable<String> {
 	private String anotacion;
 
 	public Pago() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Long getId() {

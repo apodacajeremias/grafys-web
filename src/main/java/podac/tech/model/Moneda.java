@@ -22,7 +22,7 @@ public class Moneda extends Auditable<String> {
 	private String nombre;
 
 	public Moneda() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Moneda(String nombre) {

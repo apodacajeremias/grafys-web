@@ -61,7 +61,7 @@ public class Persona extends Auditable<String> {
 	}
 
 	public Persona() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Persona(Long id) {

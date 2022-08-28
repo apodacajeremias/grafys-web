@@ -48,7 +48,7 @@ public class Usuario extends Auditable<String> {
 	}
 
 	public Usuario() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Long getId() {

@@ -64,7 +64,7 @@ public class Presupuesto extends Auditable<String> {
 	private Double sumaPagos = 0d;
 
 	public Presupuesto() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Presupuesto(Long id) {

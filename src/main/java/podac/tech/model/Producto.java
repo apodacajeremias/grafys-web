@@ -27,7 +27,7 @@ public class Producto extends Auditable<String> {
 	private Double precio = 0d;
 
 	public Producto() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Producto(Long id, boolean estado, String nombre, String unidadCobro, Double precio) {

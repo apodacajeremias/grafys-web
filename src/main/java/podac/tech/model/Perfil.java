@@ -21,7 +21,7 @@ public class Perfil extends Auditable<String> {
 	private String nombre;
 
 	public Perfil() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Perfil(String nombre) {

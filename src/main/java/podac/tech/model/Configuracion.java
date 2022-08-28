@@ -28,7 +28,7 @@ public class Configuracion extends Auditable<String> {
 	private Moneda moneda;
 
 	public Configuracion() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Long getId() {

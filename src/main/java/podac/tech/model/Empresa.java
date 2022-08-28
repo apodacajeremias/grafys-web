@@ -45,7 +45,7 @@ public class Empresa extends Auditable<String> {
 	private String logotipo;
 
 	public Empresa() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Long getId() {

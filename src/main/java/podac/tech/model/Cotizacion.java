@@ -25,7 +25,7 @@ public class Cotizacion extends Auditable<String> {
 	private Double valor;
 
 	public Cotizacion() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Long getId() {
