@@ -46,7 +46,7 @@ public class Persona extends Auditable<String> {
 	private boolean esProveedor;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "cliente", orphanRemoval = true)
+	@OneToMany(mappedBy = "cliente")
 	private List<Presupuesto> presupuestos = new ArrayList<>();
 
 	@Transient

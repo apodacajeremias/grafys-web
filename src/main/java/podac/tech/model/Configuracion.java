@@ -2,7 +2,6 @@ package podac.tech.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +24,7 @@ public class Configuracion extends Auditable<String> {
 	@Column
 	private String idioma;
 
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false)
 	private Moneda moneda;
 
 	public Configuracion() {

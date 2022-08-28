@@ -2,7 +2,6 @@ package podac.tech.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,11 +17,11 @@ public class PresupuestoDetalle extends Auditable<String> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-//	@JsonBackReference
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	// @JsonBackReference
+	@ManyToOne(optional = false)
 	private Presupuesto presupuesto;
 
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false)
 	private Producto producto;
 
 	@Column
@@ -165,17 +164,17 @@ public class PresupuestoDetalle extends Auditable<String> {
 
 	public Double getAlto() {
 		return switch (getProducto().getUnidadCobro()) {
-		case "UN": {
-			yield 0d;
-		}
-		case "M2": {
-			yield alto;
-		}
-		case "ML": {
-			yield alto;
-		}
-		default:
-			yield 100d;
+			case "UN": {
+				yield 0d;
+			}
+			case "M2": {
+				yield alto;
+			}
+			case "ML": {
+				yield alto;
+			}
+			default:
+				yield 100d;
 		};
 	}
 
@@ -185,17 +184,17 @@ public class PresupuestoDetalle extends Auditable<String> {
 
 	public Double getAncho() {
 		return switch (getProducto().getUnidadCobro()) {
-		case "UN": {
-			yield 0d;
-		}
-		case "M2": {
-			yield ancho;
-		}
-		case "ML": {
-			yield 0d;
-		}
-		default:
-			yield 100d;
+			case "UN": {
+				yield 0d;
+			}
+			case "M2": {
+				yield ancho;
+			}
+			case "ML": {
+				yield 0d;
+			}
+			default:
+				yield 100d;
 		};
 	}
 
@@ -205,17 +204,17 @@ public class PresupuestoDetalle extends Auditable<String> {
 
 	public Double getArea() {
 		return switch (getProducto().getUnidadCobro()) {
-		case "UN": {
-			yield 1d;
-		}
-		case "M2": {
-			yield (alto * ancho) / 10000;
-		}
-		case "ML": {
-			yield alto / 100;
-		}
-		default:
-			yield 1d;
+			case "UN": {
+				yield 1d;
+			}
+			case "M2": {
+				yield (alto * ancho) / 10000;
+			}
+			case "ML": {
+				yield alto / 100;
+			}
+			default:
+				yield 1d;
 		};
 	}
 

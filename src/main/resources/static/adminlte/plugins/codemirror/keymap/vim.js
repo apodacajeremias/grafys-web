@@ -10,7 +10,7 @@
  *
  * Registers: unnamed, -, ., :, /, _, a-z, A-Z, 0-9
  *   (Does not respect the special case for number registers when delete
- *    operator is made with these commands: %, (, ),  , /, ?, n, N, {, } )
+ *    operator is made with these commands: %, (),  , /, ?, n, N, {, } )
  *   TODO: Implement the remaining registers.
  *
  * Marks: a-z, A-Z, and 0-9

@@ -2,7 +2,6 @@ package podac.tech.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +18,7 @@ public class Cotizacion extends Auditable<String> {
 	@Column
 	private boolean estado = true;
 
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false)
 	private Moneda moneda;
 
 	@Column

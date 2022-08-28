@@ -294,7 +294,6 @@ public class HomeController {
 		for (Map.Entry<String, String> moneda : MONEDAS.entrySet()) {
 			if (!this.monedaService.existeMoneda(moneda.getKey())) {
 				String nombre = moneda.getKey();
-				String simbolo = moneda.getValue();
 				this.monedaService.guardar(new Moneda(nombre));
 			}
 		}

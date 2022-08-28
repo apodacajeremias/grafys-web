@@ -2,7 +2,6 @@ package podac.tech.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,14 +23,14 @@ public class Pago extends Auditable<String> {
 	@Column
 	private boolean esGasto;
 
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false)
 	private Moneda moneda;
 
-	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	@ManyToOne(optional = true)
 	private Cotizacion cotizacion;
 
 	@JsonBackReference
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false)
 	private Presupuesto presupuesto;
 
 	@Column

@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +30,7 @@ public class Presupuesto extends Auditable<String> {
 	private Boolean estado = null;
 
 	@JsonBackReference
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false)
 	private Persona cliente;
 
 	@Column
@@ -44,21 +43,21 @@ public class Presupuesto extends Auditable<String> {
 	private Double descuento = 0d;
 
 	@JsonIgnore
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false)
 	private Moneda moneda = new Moneda(3L);
 
 	@JsonIgnore
-	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	@ManyToOne(optional = true)
 	private Cotizacion cotizacion;
 
-//	@JsonManagedReference
+	// @JsonManagedReference
 	@JsonIgnore
-	@OneToMany(mappedBy = "presupuesto", orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "presupuesto", cascade = CascadeType.ALL)
 	private List<PresupuestoDetalle> detalles = new ArrayList<>();
 
-//	@JsonManagedReference
+	// @JsonManagedReference
 	@JsonIgnore
-	@OneToMany(mappedBy = "presupuesto", orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "presupuesto")
 	private List<Pago> pagos = new ArrayList<>();
 
 	@Transient
