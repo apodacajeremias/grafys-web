@@ -51,7 +51,6 @@ public class PresupuestoDetalleServiceJpa implements IPresupuestoDetalleService 
 
 	@Override
 	public List<PresupuestoDetalle> buscarConEjemplo(Example<PresupuestoDetalle> example) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -76,13 +75,13 @@ public class PresupuestoDetalleServiceJpa implements IPresupuestoDetalleService 
 
 	@Override
 	public Page<PresupuestoDetalle> buscarDetallesPorUsuario(String username, Pageable page) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public List<PresupuestoDetalle> buscarDetallesPorUsuario(String username) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
