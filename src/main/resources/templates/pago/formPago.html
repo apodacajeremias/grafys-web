@@ -160,7 +160,7 @@
 								<form class="row g-3" th:action="@{/presupuesto/addDetalle}" th:object="${producto}" method="post">
 									<div class="input-group col-md-12">
 										<select th:field="*{id}" class="form-select searchableSelector" id="productoSelect"
-											aria-label="Floating label select example" required="required">
+											aria-label="Floating label select example" required>
 											<option th:value="${null}" selected>Seleccione producto</option>
 											<option th:each="prod : ${productos}" th:value="${prod.id}"
 												th:text="${prod.nombre}+' x '+${prod.unidadCobro}"></option>
